@@ -1,0 +1,68 @@
+def game_rules(old_grid,rows,columns):
+    
+    to_update=[]
+    
+    for row in range(rows):
+        for column in range(columns):
+            
+            
+         
+            number_of_alive_neighbours = (old_grid[row][(column-1)%columns] + old_grid[row][(column+1)%columns] +
+                         old_grid[(row-1)%rows][column] + old_grid[(row+1)%rows][column] +
+                         old_grid[(row-1)%rows][(column-1)%columns] + old_grid[(row-1)%rows][(column+1)%columns] +
+                         old_grid[(row+1)%rows][(column-1)%columns] + old_grid[(row+1)%rows][(column+1)%columns]) 
+                        
+            
+            if(old_grid[row][column]==0 and number_of_alive_neighbours==3):
+                
+                to_update.append([row,column,1])
+            elif(old_grid[row][column]==1 and (number_of_alive_neighbours<2 or number_of_alive_neighbours>3)):
+                
+                to_update.append([row,column,0])
+ 
+    for every_list in to_update:
+        print(every_list)
+        row=every_list[0]
+        column=every_list[1]
+        status=every_list[2]
+        old_grid[row][column]=status
+    print (old_grid)
+    return old_grid
+
+def initialize_grid(rows_of_grid,columns_of_grid):
+    grid = []           
+    for row in range(rows_of_grid):
+        grid.append([])             
+        for column in range(columns_of_grid):
+            grid[row].append(0)
+
+    return grid
+
+def main():
+    
+    
+    columns_of_grid = int(input("Select the number of rows of grid you want to play(must be greater than or equal to 4) "))
+    rows_of_grid = int(input("Select the number of coloums of grid you want to play (must be greater than or equal to 4)"))
+   
+    
+    grid = initialize_grid(rows_of_grid,columns_of_grid) 
+
+    grid[1][2]=1  
+    grid[2][1]=1 
+    grid[2][3]=1
+    grid[2][2]=1
+    grid[3][2]=1
+    grid[3][1]=1
+    grid = game_rules(grid,rows_of_grid,columns_of_grid)
+
+    while True :
+        next_generation = input(("Want to see to next generation(yes/no)?:"))
+        if next_generation == "yes" :
+            grid = game_rules(grid,rows_of_grid,columns_of_grid)
+            
+        else :
+            print("game ended")
+            quit()
+    
+main()
+
